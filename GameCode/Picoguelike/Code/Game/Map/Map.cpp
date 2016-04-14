@@ -376,7 +376,7 @@ void Map::FindValidAdjacentPositions(std::vector<PathNode>& outValidPositionsVec
 					gCostForMove = 1.4f;
 				}
 				Vector2Int hVector = Vector2Int::Manhattan(start.position, end);
-				outValidPositionsVector.emplace_back(foundCell->m_position, const_cast<PathNode*>(&start), (start.g + gCostForMove), (hVector.x + hVector.y));
+				outValidPositionsVector.emplace_back(foundCell->m_position, const_cast<PathNode*>(&start), (gCostForMove), (hVector.x + hVector.y));
 			}
 		}
 	}
