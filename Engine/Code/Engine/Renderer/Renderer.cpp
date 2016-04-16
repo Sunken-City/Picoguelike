@@ -157,6 +157,7 @@ void Renderer::RotateView(float degrees, const Vector3& axis)
 	PushView(rotation);
 }
 
+//-----------------------------------------------------------------------------------
 void Renderer::TranslateView(const Vector3& translation)
 {
 	Matrix4x4 translationMatrix = Matrix4x4::IDENTITY;
@@ -370,13 +371,14 @@ void Renderer::DrawVertexArrayModern(const Vertex_PCT* vertexes, int numVertexes
 	}
 	builder.End();
 
-	Mesh mesh;
-	builder.CopyToMesh(&mesh, &Vertex_PCUTB::Copy);
-	mesh.m_drawMode = drawMode;
+	Mesh* mesh = new Mesh();
+	builder.CopyToMesh(mesh, &Vertex_PCUTB::Copy);
+	mesh->m_drawMode = drawMode;
 	MeshRenderer thingToRender = MeshRenderer(mesh, m_defaultMaterial);
 	m_defaultMaterial->SetMatrices(Matrix4x4::IDENTITY, m_viewStack.GetTop(), m_projStack.GetTop());
 	GL_CHECK_ERROR();
 	thingToRender.Render();
+	delete mesh;
 }
 
 //-----------------------------------------------------------------------------------
@@ -417,13 +419,14 @@ void Renderer::DrawVertexArray(const Vertex_PCT* vertexes, int numVertexes, Draw
 	}
 	builder.End();
 
-	Mesh mesh;
-	builder.CopyToMesh(&mesh, &Vertex_PCUTB::Copy);
-	mesh.m_drawMode = drawMode;
+	Mesh* mesh = new Mesh();
+	builder.CopyToMesh(mesh, &Vertex_PCUTB::Copy);
+	mesh->m_drawMode = drawMode;
 	MeshRenderer thingToRender = MeshRenderer(mesh, m_defaultMaterial);
 	m_defaultMaterial->SetMatrices(Matrix4x4::IDENTITY, m_viewStack.GetTop(), m_projStack.GetTop());
 	GL_CHECK_ERROR();
 	thingToRender.Render();
+	delete mesh;
 }
 
 //-----------------------------------------------------------------------------------
@@ -525,13 +528,14 @@ void Renderer::DrawText2D
 	}
 	builder.End();
 
-	Mesh mesh;
-	builder.CopyToMesh(&mesh, &Vertex_PCUTB::Copy);
-	mesh.m_drawMode = DrawMode::TRIANGLES;
+	Mesh* mesh = new Mesh();
+	builder.CopyToMesh(mesh, &Vertex_PCUTB::Copy);
+	mesh->m_drawMode = DrawMode::TRIANGLES;
 	MeshRenderer thingToRender = MeshRenderer(mesh, font->GetMaterial());
 	m_defaultMaterial->SetMatrices(Matrix4x4::IDENTITY, m_viewStack.GetTop(), m_projStack.GetTop());
 	GL_CHECK_ERROR();
 	thingToRender.Render();
+	delete mesh;
 }
 
 //-----------------------------------------------------------------------------------
@@ -584,13 +588,14 @@ void Renderer::DrawText2D(const Vector2& position, const std::string& asciiText,
 	}
 	builder.End();
 
-	Mesh mesh;
-	builder.CopyToMesh(&mesh, &Vertex_PCUTB::Copy);
-	mesh.m_drawMode = DrawMode::TRIANGLES;
+	Mesh* mesh = new Mesh();
+	builder.CopyToMesh(mesh, &Vertex_PCUTB::Copy);
+	mesh->m_drawMode = DrawMode::TRIANGLES;
 	MeshRenderer thingToRender = MeshRenderer(mesh, font->GetMaterial());
 	m_defaultMaterial->SetMatrices(Matrix4x4::IDENTITY, m_viewStack.GetTop(), m_projStack.GetTop());
 	GL_CHECK_ERROR();
 	thingToRender.Render();
+	delete mesh;
 }
 
 //-----------------------------------------------------------------------------------
@@ -617,12 +622,19 @@ unsigned char Renderer::GetDrawMode(DrawMode mode) const
 	}
 }
 
-GLuint Renderer::GenerateVertexArraysHandle()
+//-----------------------------------------------------------------------------------
+GLuint Renderer::GenerateVAOHandle()
 {
 	GLuint vaoID;
 	glGenVertexArrays(1, &vaoID);
 	ASSERT_OR_DIE(vaoID != NULL, "VAO was null");
 	return vaoID;
+}
+
+//-----------------------------------------------------------------------------------
+void Renderer::DeleteVAOHandle(GLuint vaoID)
+{
+	glDeleteVertexArrays(1, &vaoID);
 }
 
 //-----------------------------------------------------------------------------------

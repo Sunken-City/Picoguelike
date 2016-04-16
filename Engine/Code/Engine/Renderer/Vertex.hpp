@@ -4,6 +4,7 @@
 #include "Engine/Renderer/RGBA.hpp"
 
 struct Vertex_Master;
+class ShaderProgram;
 //TYPEDEFS//////////////////////////////////////////////////////////////////////////
 typedef unsigned char byte;
 typedef void (VertexCopyCallback)(const Vertex_Master& source, byte* destination);
@@ -25,11 +26,14 @@ struct Vertex_Master
 //-----------------------------------------------------------------------------------
 struct Vertex_PCT
 {
+	typedef unsigned int GLuint;
+
 	Vertex_PCT() {};
 	Vertex_PCT(const Vector3& position) : pos(position) {};
 	Vertex_PCT(const Vector3& position, const RGBA& color) : pos(position), color(color) {};
 	Vertex_PCT(const Vector3& position, const RGBA& color, const Vector2& texCoords) : pos(position), color(color), texCoords(texCoords) {};
 	static void Copy(const Vertex_Master& source, byte* destination);
+	static void BindMeshToVAO(GLuint vao, GLuint vbo, GLuint ibo, ShaderProgram* program);
 
 	//MEMBER VARIABLES//////////////////////////////////////////////////////////////////////////
 	Vector3 pos;
@@ -40,6 +44,8 @@ struct Vertex_PCT
 //-----------------------------------------------------------------------------------
 struct Vertex_PCUTB
 {
+	typedef unsigned int GLuint;
+
 	Vertex_PCUTB() {};
 	Vertex_PCUTB(const Vector3& position) 
 		: pos(position) {};
@@ -57,6 +63,7 @@ struct Vertex_PCUTB
 		, tangent(tangent)
 		, bitangent(bitangent) {};
 	static void Copy(const Vertex_Master& source, byte* destination);
+	static void BindMeshToVAO(GLuint vao, GLuint vbo, GLuint ibo, ShaderProgram* program);
 
 	//MEMBER VARIABLES//////////////////////////////////////////////////////////////////////////
 	Vector3 pos;

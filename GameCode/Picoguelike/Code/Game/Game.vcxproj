@@ -97,6 +97,8 @@
   <ItemGroup>
     <ClCompile Include="Entities\Agent.cpp" />
     <ClCompile Include="Entities\Entity.cpp" />
+    <ClCompile Include="Entities\NPC.cpp" />
+    <ClCompile Include="Entities\NPCFactory.cpp" />
     <ClCompile Include="Entities\Player.cpp" />
     <ClCompile Include="Environments\EnvironmentBlueprint.cpp" />
     <ClCompile Include="Generators\CellularAutomataGenerator.cpp" />
@@ -120,6 +122,8 @@
   <ItemGroup>
     <ClInclude Include="Entities\Agent.hpp" />
     <ClInclude Include="Entities\Entity.hpp" />
+    <ClInclude Include="Entities\NPC.hpp" />
+    <ClInclude Include="Entities\NPCFactory.hpp" />
     <ClInclude Include="Entities\Player.hpp" />
     <ClInclude Include="Environments\EnvironmentBlueprint.hpp" />
     <ClInclude Include="Generators\CellularAutomataGenerator.hpp" />
@@ -150,6 +154,7 @@
     </Xml>
     <Xml Include="..\..\Run_Win32\Data\XML\Maps\Caves.Map.xml" />
     <Xml Include="..\..\Run_Win32\Data\XML\Maps\Pico.Map.xml" />
+    <Xml Include="..\..\Run_Win32\Data\XML\NPCs\Slimes.NPC.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

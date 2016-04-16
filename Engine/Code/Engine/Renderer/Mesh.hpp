@@ -21,14 +21,14 @@ public:
 	//FUNCTIONS//////////////////////////////////////////////////////////////////////////
 	void RenderFromIBO(GLuint vaoID, const Material& program) const;
 	void FlipVs();
-	static Mesh CreateCube(float sideLength, const RGBA& color = RGBA::WHITE);
-	static Mesh CreateUVSphere(float radius, int numSegments, const RGBA& color = RGBA::WHITE);
-	static Mesh CreateIcoSphere(float radius, const RGBA& color = RGBA::WHITE, int numPasses = 3);
-	static Mesh CreateQuad(const Vector3& bottomLeft, const Vector3& up, float upLength, const Vector3& right, float rightLength, const RGBA& color = RGBA::WHITE);
+	static Mesh* CreateCube(float sideLength, const RGBA& color = RGBA::WHITE);
+	static Mesh* CreateUVSphere(float radius, int numSegments, const RGBA& color = RGBA::WHITE);
+	static Mesh* CreateIcoSphere(float radius, const RGBA& color = RGBA::WHITE, int numPasses = 3);
+	static Mesh* CreateQuad(const Vector3& bottomLeft, const Vector3& up, float upLength, const Vector3& right, float rightLength, const RGBA& color = RGBA::WHITE);
 
 	//HELPER FUNCTIONS//////////////////////////////////////////////////////////////////////////
 	void Init();
-	static void AddQuadToMesh(Mesh& meshBeingConstructed, const Vector3& bottomLeft, const Vector3& up, float upLength, const Vector3& right, float rightLength, const RGBA& color = RGBA::WHITE, const Vector2& uvOffset = Vector2::ZERO, float uvStepSize = 1.0f);
+	static void AddQuadToMesh(Mesh* meshBeingConstructed, const Vector3& bottomLeft, const Vector3& up, float upLength, const Vector3& right, float rightLength, const RGBA& color = RGBA::WHITE, const Vector2& uvOffset = Vector2::ZERO, float uvStepSize = 1.0f);
 	
 	//MEMBER VARIABLES//////////////////////////////////////////////////////////////////////////
 	GLuint m_vbo;

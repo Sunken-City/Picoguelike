@@ -30,6 +30,7 @@ public:
 	void RenderPlaying();
 	void RenderPaused();
 	void UpdatePlayerInput();
+
 	//MEMBER VARIABLES//////////////////////////////////////////////////////////////////////////
 	static TheGame* instance;
 	Map* m_currentMap;

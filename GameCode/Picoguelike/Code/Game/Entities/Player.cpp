@@ -5,7 +5,9 @@
 #include "Engine/Renderer/BitmapFont.hpp"
 #include "Game/Map/Map.hpp"
 #include "Engine/Input/InputSystem.hpp"
+#include "Engine/Core/ProfilingUtils.h"
 
+//-----------------------------------------------------------------------------------
 Player::Player()
 	: Agent()
 	, m_action(NO_ACTION)
@@ -16,11 +18,13 @@ Player::Player()
 	m_color = RGBA::TURQUOISE;
 }
 
+//-----------------------------------------------------------------------------------
 Player::~Player()
 {
 
 }
 
+//-----------------------------------------------------------------------------------
 void Player::Update(float deltaSeconds)
 {
 	Agent::Update(deltaSeconds);
@@ -39,15 +43,46 @@ void Player::Update(float deltaSeconds)
 
 	if (InputSystem::instance->WasKeyJustPressed('P'))
 	{
-		if (!m_path.m_hasBegun)
+		m_path.m_resultantPath.clear();
+		if (InputSystem::instance->IsKeyDown(InputSystem::ExtraKeys::SHIFT))
 		{
-			Vector2Int goalPosition = m_map->GetRandomCellOfType(Cell::AIR).m_position;
-			m_path.InitializePathForStep(m_position, goalPosition);
+			std::vector<Vector2Int> startingPositions;
+			std::vector<Vector2Int> endingPositions;
+			for (int i = 0; i < 10000; ++i)
+			{
+				startingPositions.push_back(m_map->GetRandomCellOfType(Cell::AIR).m_position);
+				endingPositions.push_back(m_map->GetRandomCellOfType(Cell::AIR).m_position);
+			}
+
+			StartTiming();
+			for (int i = 0; i < 10000; ++i)
+			{
+				m_path.InitializePathForStep(startingPositions[i], endingPositions[i]);
+				while (!m_path.FindPathStep())
+				{
+				}
+				m_path.m_resultantPath.clear();
+			}
+			DebuggerPrintf("\n10000 steps took %f seconds to run.\n", EndTiming());
 		}
-		m_path.FindPathStep();
+		else
+		{
+			if (!m_path.m_hasBegun)
+			{
+				Vector2Int goalPosition = m_map->GetRandomCellOfType(Cell::AIR).m_position;
+				m_path.InitializePathForStep(m_position, goalPosition);
+			}
+			bool isFinished = m_path.FindPathStep();
+			if (isFinished)
+			{
+				Vector2Int goalPosition = m_map->GetRandomCellOfType(Cell::AIR).m_position;
+				m_path.InitializePathForStep(m_position, goalPosition);
+			}
+		}
 	}
 }
 
+//-----------------------------------------------------------------------------------
 void Player::Render() const
 {
 	Agent::Render();
@@ -56,6 +91,7 @@ void Player::Render() const
 	Renderer::instance->DrawText2D((Vector2(m_position) * 25.0f) + mapOffset, characterString, 1.0f, m_color, false, BitmapFont::CreateOrGetFontFromGlyphSheet("Runescape"));
 }
 
+//-----------------------------------------------------------------------------------
 void Player::MoveInCurrentDirection()
 {
 	switch (m_direction)
@@ -92,6 +128,7 @@ void Player::MoveInCurrentDirection()
 	}
 }
 
+//-----------------------------------------------------------------------------------
 void Player::QueueMove(Direction dir)
 {
 	m_direction = dir;

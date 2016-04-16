@@ -145,7 +145,7 @@ public:
     void UnbindIbo();
     void BindMeshToVAOVertexPCUTB(GLuint vao, GLuint vbo, GLuint ibo, ShaderProgram* program);
     void RenderBufferDestroy(GLuint buffer);                                    
-    GLuint GenerateVertexArraysHandle();
+    GLuint GenerateVAOHandle();
     GLuint RenderBufferCreate(void* data, size_t count, size_t elementSize, GLenum usage/* = GL_STATIC_DRAW*/);
     int CreateSampler(GLenum min_filter, GLenum magFilter, GLenum uWrap, GLenum vWrap);
     inline void PushProjection(const Matrix4x4& proj) { m_projStack.Push(proj); };
@@ -156,7 +156,8 @@ public:
     inline Matrix4x4 GetView() { return m_viewStack.GetTop(); };
 	void RotateView(float degrees, const Vector3& axis);
 	void TranslateView(const Vector3& translation);
-    //CONSTANTS//////////////////////////////////////////////////////////////////////////
+	void DeleteVAOHandle(GLuint m_vaoID);
+	//CONSTANTS//////////////////////////////////////////////////////////////////////////
     static const int CIRCLE_SIDES = 50;
     static const int HEXAGON_SIDES = 6;
     static const unsigned char plainWhiteTexel[3];

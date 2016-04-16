@@ -360,23 +360,23 @@ void Map::UpdateFOVFrom(const Vector2Int& location, int radius /*= 10*/)
 }
 
 //-----------------------------------------------------------------------------------
-void Map::FindValidAdjacentPositions(std::vector<PathNode>& outValidPositionsVector, const PathNode& start, const Vector2Int& end)
+void Map::FindValidAdjacentPositions(std::vector<PathNode*>& outValidPositionsVector, PathNode* start, const Vector2Int& end)
 {
 	for (int y = -1; y < 2; ++y)
 	{
 		for (int x = -1; x < 2; ++x)
 		{
 			Vector2Int directionOffset(x, y);
-			Cell* foundCell = TheGame::instance->m_currentMap->FindCellAt(start.position + directionOffset);
-			if (foundCell != nullptr && !foundCell->IsSolid() && foundCell->m_position != start.position)
+			Cell* foundCell = TheGame::instance->m_currentMap->FindCellAt(start->position + directionOffset);
+			if (foundCell != nullptr && !foundCell->IsSolid() && foundCell->m_position != start->position)
 			{
 				float gCostForMove = 1.0f;
 				if (abs(x) + abs(y) > 1)
 				{
 					gCostForMove = 1.4f;
 				}
-				Vector2Int hVector = Vector2Int::Manhattan(start.position, end);
-				outValidPositionsVector.emplace_back(foundCell->m_position, const_cast<PathNode*>(&start), (start.g + gCostForMove), (hVector.x + hVector.y));
+				Vector2Int hVector = Vector2Int::Manhattan(foundCell->m_position, end);
+				outValidPositionsVector.push_back(new PathNode(foundCell->m_position, start, (gCostForMove), (hVector.x + hVector.y)));
 			}
 		}
 	}
@@ -396,7 +396,6 @@ MapRaycastCollision Map::RaycastAmanatidesWoo(const Vector2& start, const Vector
 	{
 		ERROR_AND_DIE("startCell was null!");
 	}
-	Cell::Type cellType = startCell->m_type;
 	startCell->m_isVisible = true;
 	startCell->m_knownAs = m_characterLegend[startCell->m_type];
 

@@ -3,6 +3,7 @@
 #include "Engine/Renderer/MeshRenderer.hpp"
 #include "Engine/Renderer/Material.hpp"
 #include "Engine/Renderer/RGBA.hpp"
+#include "Engine/Renderer/Mesh.hpp"
 
 Light::Light()
 {

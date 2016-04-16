@@ -34,6 +34,7 @@ public:
 	virtual void Render() const;
 	void MoveInCurrentDirection();
 	void QueueMove(Direction dir);
+
 	//MEMBER VARIABLES//////////////////////////////////////////////////////////////////////////
 	Action m_action;
 	Direction m_direction;

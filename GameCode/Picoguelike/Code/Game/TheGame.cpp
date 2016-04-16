@@ -18,6 +18,7 @@ TheGame* TheGame::instance = nullptr;
 extern bool g_isQuitting;
 bool g_renderDebug = false;
 
+//-----------------------------------------------------------------------------------
 TheGame::TheGame()
 	: m_currentMap(nullptr)
 	, m_currentGenerator(GeneratorRegistration::CreateGeneratorByName("CellularAutomata"))
@@ -27,11 +28,13 @@ TheGame::TheGame()
 	SetGameState(GameState::MAIN_MENU);
 }
 
+//-----------------------------------------------------------------------------------
 TheGame::~TheGame()
 {
 	SetGameState(GameState::SHUTDOWN);
 }
 
+//-----------------------------------------------------------------------------------
 void TheGame::Update(float deltaSeconds)
 {
 	if (InputSystem::instance->WasKeyJustPressed('D'))

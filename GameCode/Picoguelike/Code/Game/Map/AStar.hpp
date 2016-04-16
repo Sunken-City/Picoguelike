@@ -6,7 +6,7 @@ struct PathNode;
 
 //TYPEDEFS//////////////////////////////////////////////////////////////////////////
 typedef Vector2Int MapPosition;
-typedef void (FindValidAdjacentPositionsFunction)(std::vector<PathNode>& outValidPositionsVector, const PathNode& start, const Vector2Int& end);
+typedef void (FindValidAdjacentPositionsFunction)(std::vector<PathNode*>& outValidPositionsVector, PathNode* start, const Vector2Int& end);
 
 //-----------------------------------------------------------------------------------
 struct PathNode
@@ -39,17 +39,17 @@ public:
 	void Render() const;
 
 	//MEMBER VARIABLES//////////////////////////////////////////////////////////////////////////
-	std::vector<PathNode> m_openList;
-	std::vector<PathNode> m_closedList;
-	std::vector<PathNode> m_resultantPath;
+	std::vector<PathNode*> m_openList;
+	std::vector<PathNode*> m_closedList;
+	std::vector<PathNode*> m_resultantPath;
 	MapPosition m_currentGoal;
 	bool m_hasBegun;
 	FindValidAdjacentPositionsFunction* FindValidAdjacentPositions;
 
 private:
 	//HELPER FUNCTIONS//////////////////////////////////////////////////////////////////////////
-	PathNode FindLowestFNodeOnOpenListAndRemoveIt();
+	PathNode* FindLowestFNodeOnOpenListAndRemoveIt();
 	PathNode* FindOpenNodeWithPosInOpenList(const MapPosition& position);
-	void RecursivelyBuildPathToStartFromNode(const PathNode& activeNode);
+	void RecursivelyBuildPathToStartFromNode(PathNode* activeNode);
 	bool IsPositionOnClosedList(const MapPosition& position);
 };

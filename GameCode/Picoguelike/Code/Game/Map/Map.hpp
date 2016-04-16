@@ -8,6 +8,7 @@ struct XMLNode;
 struct PathNode;
 class AABB2;
 
+//-----------------------------------------------------------------------------------
 struct MapRaycastCollision
 {
 	Vector2Int startPosition;
@@ -16,6 +17,7 @@ struct MapRaycastCollision
 	bool collided;
 };
 
+//-----------------------------------------------------------------------------------
 class Map
 {
 public:
@@ -24,6 +26,7 @@ public:
 	Map(const Vector2Int& size);
 	~Map();
 
+	//FUNCTIONS//////////////////////////////////////////////////////////////////////////
 	void Render() const;
 
 	//HELPER FUNCTIONS//////////////////////////////////////////////////////////////////////////
@@ -48,7 +51,7 @@ public:
 	void SetIsVisible(Cell& cell);
 	void ResetVisibility();
 	void UpdateFOVFrom(const Vector2Int& location, int radius = 10);
-	static void FindValidAdjacentPositions(std::vector<PathNode>& outValidPositionsVector, const PathNode& start, const Vector2Int& end);
+	static void FindValidAdjacentPositions(std::vector<PathNode*>& outValidPositionsVector, PathNode* start, const Vector2Int& end);
 
 	//MEMBER VARIABLES//////////////////////////////////////////////////////////////////////////
 	std::vector<Cell> m_cellGrid;

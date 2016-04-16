@@ -6,25 +6,29 @@
 #include "Engine/Renderer/Vertex.hpp"
 
 MeshRenderer::MeshRenderer()
+	: m_mesh(nullptr)
+	, m_material(nullptr)
+	, m_model(Matrix4x4::IDENTITY)
+	, m_vaoID(0)
 {
 
 }
 
-MeshRenderer::MeshRenderer(const Mesh& mesh, Material* material)
+MeshRenderer::MeshRenderer(Mesh* mesh, Material* material)
 	: m_mesh(mesh)
 	, m_material(material)
 	, m_model(Matrix4x4::IDENTITY)
 	, m_vaoID(0)
 {
-	m_vaoID = Renderer::instance->GenerateVertexArraysHandle();
+	m_vaoID = Renderer::instance->GenerateVAOHandle();
 	GL_CHECK_ERROR();
 }
 
 MeshRenderer::~MeshRenderer()
 {
-	if (m_vaoID == 0)
+	if (m_vaoID != 0)
 	{
-		//Renderer::instance->Delete(m_vaoID);
+		Renderer::instance->DeleteVAOHandle(m_vaoID);
 	}
 }
 
@@ -32,8 +36,8 @@ void MeshRenderer::Render() const
 {
 	m_material->SetMatrices(m_model, Renderer::instance->m_viewStack.GetTop(), Renderer::instance->m_projStack.GetTop());
 	m_material->BindAvailableTextures();
-	Renderer::instance->BindMeshToVAOVertexPCUTB(m_vaoID, m_mesh.m_vbo, m_mesh.m_ibo, m_material->m_shaderProgram);
-	m_mesh.RenderFromIBO(m_vaoID, *m_material);
+ 	Renderer::instance->BindMeshToVAOVertexPCUTB(m_vaoID, m_mesh->m_vbo, m_mesh->m_ibo, m_material->m_shaderProgram);
+	m_mesh->RenderFromIBO(m_vaoID, *m_material);
 	GL_CHECK_ERROR();
 	Renderer::instance->UnbindIbo();
 	m_material->UnbindAvailableTextures();
